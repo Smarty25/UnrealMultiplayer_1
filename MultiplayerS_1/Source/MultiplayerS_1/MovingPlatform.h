@@ -15,12 +15,19 @@ class MULTIPLAYERS_1_API AMovingPlatform : public AStaticMeshActor
 	GENERATED_BODY()
 
 public:
+
 	AMovingPlatform();
 
 	UPROPERTY(EditAnywhere)
-		float MoveSpeed = .5;
+	float MoveSpeed = .5;
+
+	UPROPERTY(EditAnywhere, Meta = (MakeEditWidget))
+	FVector TargetLocation;
 	
 protected:
+
+	virtual void BeginPlay() override;
+
 	virtual void Tick(float DeltaTime) override;
 	
 	
