@@ -17,6 +17,8 @@ void AMovingPlatform::BeginPlay()
 		SetReplicates(true);
 		SetReplicateMovement(true);
 	}
+	GlobalStartLocation = GetActorLocation();
+	GlobalTargetLocation = GetTransform().TransformPosition(TargetLocation);
 }
 
 void AMovingPlatform::Tick(float DeltaTime)
@@ -25,8 +27,14 @@ void AMovingPlatform::Tick(float DeltaTime)
 	if (HasAuthority())
 	{
 		FVector Location = GetActorLocation();
-		FVector Direction = TargetLocation.GetSafeNormal();
-		Location += (MoveSpeed * Direction);
+		if (Location.Equals(GlobalTargetLocation, MoveSpeed/50))
+		{
+			FVector Temp = GlobalStartLocation;
+			GlobalStartLocation = GlobalTargetLocation;
+			GlobalTargetLocation = Temp;
+		}
+		FVector Direction = (GlobalTargetLocation - GlobalStartLocation).GetSafeNormal();
+		Location += ((MoveSpeed * DeltaTime) * Direction);
 		SetActorLocation(Location);
 	}
 }
