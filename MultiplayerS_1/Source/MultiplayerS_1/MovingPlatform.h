@@ -23,6 +23,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Meta = (MakeEditWidget))
 	FVector TargetLocation;
+
+	void Activate();
+	void Deactivate();
 	
 protected:
 
@@ -31,6 +34,8 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 
 private:
+	UPROPERTY(EditAnywhere)
+	bool bIsActivated = false;
 
 	FVector GlobalTargetLocation;
 	FVector GlobalStartLocation;
