@@ -44,7 +44,7 @@ void APlatformTrigger::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AAct
 
 void APlatformTrigger::OnOverlapEnd(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
 {
-	if (!MovingPlatforms.Num() == 0) { return; }
+	if (MovingPlatforms.Num() == 0) { return; }
 	for (AMovingPlatform* MovingPlatform : MovingPlatforms)
 	{
 		MovingPlatform->Deactivate();
