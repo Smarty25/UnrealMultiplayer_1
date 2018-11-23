@@ -2,14 +2,29 @@
 
 #include "PuzzlePlatformGameInstance.h"
 
+#include "Engine/Engine.h"
+
 UPuzzlePlatformGameInstance::UPuzzlePlatformGameInstance(const FObjectInitializer & ObjectInitializer)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Constructor"))
 }
 
 void UPuzzlePlatformGameInstance::Init()
 {
 	Super::Init();
+}
 
-	UE_LOG(LogTemp, Warning, TEXT("Init"))
+void UPuzzlePlatformGameInstance::Host()
+{
+	UEngine* Engine = GetEngine();
+	if (!Engine) { return; }
+
+	Engine->AddOnScreenDebugMessage(0, 2, FColor::Green, TEXT("Hosting"));
+}
+
+void UPuzzlePlatformGameInstance::Join(const FString& IPAddress)
+{
+	UEngine* Engine = GetEngine();
+	if (!Engine) { return; }
+
+	Engine->AddOnScreenDebugMessage(0, 2, FColor::Green, FString::Printf(TEXT("Joining %s"), *IPAddress));
 }
