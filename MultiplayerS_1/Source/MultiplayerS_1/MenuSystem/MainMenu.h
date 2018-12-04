@@ -14,9 +14,15 @@ class MULTIPLAYERS_1_API UMainMenu : public UUserWidget
 {
 	GENERATED_BODY()
 
+private:
 		UPROPERTY(meta = (BindWidget))
 		class UButton* Host_Button;
 	
 		UPROPERTY(meta = (BindWidget))
 		class UButton* Join_Button;
+protected:
+	virtual bool Initialize() override;
+
+	UFUNCTION()
+	void Host_ButtonOnClick();
 };
