@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "MenuInterface.h"
 #include "MainMenu.generated.h"
 
 /**
@@ -14,15 +15,25 @@ class MULTIPLAYERS_1_API UMainMenu : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
+
+	void SetMenuInterface(IMenuInterface* MenuInterfaceToSet);
+
 private:
-		UPROPERTY(meta = (BindWidget))
-		class UButton* Host_Button;
+
+	IMenuInterface * MenuInterface;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Host_Button;
 	
-		UPROPERTY(meta = (BindWidget))
-		class UButton* Join_Button;
-protected:
-	virtual bool Initialize() override;
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Join_Button;
 
 	UFUNCTION()
 	void Host_ButtonOnClick();
+
+protected:
+
+	virtual bool Initialize() override;
+
 };

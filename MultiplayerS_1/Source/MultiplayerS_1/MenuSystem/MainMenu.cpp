@@ -14,7 +14,12 @@ bool UMainMenu::Initialize()
 	return true;
 }
 
+void UMainMenu::SetMenuInterface(IMenuInterface* MenuInterfaceToSet)
+{
+	MenuInterface = MenuInterfaceToSet;
+}
+
 void UMainMenu::Host_ButtonOnClick()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Host Button Clicked"))
+	if (MenuInterface) { MenuInterface->Host(); UE_LOG(LogTemp, Warning, TEXT("Host Button Clicked")) }
 }
