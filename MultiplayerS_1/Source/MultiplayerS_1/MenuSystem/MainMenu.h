@@ -19,6 +19,9 @@ public:
 
 	void SetMenuInterface(IMenuInterface* MenuInterfaceToSet);
 
+	void Setup();
+	void OnLevelRemovedFromWorld(ULevel* Inlevel, UWorld* InWorld) override;
+
 private:
 
 	IMenuInterface * MenuInterface;
