@@ -2,14 +2,21 @@
 
 #include "MainMenu.h"
 #include "Components/Button.h"
+#include "Components/WidgetSwitcher.h"
 
 bool UMainMenu::Initialize()
 {
 	bool Success = Super::Initialize();
 	if (!Success) { return false; }
 
-	if (!Host_Button) { return false; }
-	Host_Button->OnClicked.AddDynamic(this, &UMainMenu::Host_ButtonOnClick);
+	if (!HostButton) { return false; }
+	HostButton->OnClicked.AddDynamic(this, &UMainMenu::HostServer);
+
+	if (!JoinButton) { return false; }
+	JoinButton->OnClicked.AddDynamic(this, &UMainMenu::OpenJoinMenu);
+
+	if (!BackButton) { return false; }
+	BackButton->OnClicked.AddDynamic(this, &UMainMenu::OpenMainMenu);
 
 	return true;
 }
@@ -47,7 +54,23 @@ void UMainMenu::SetMenuInterface(IMenuInterface* MenuInterfaceToSet)
 	MenuInterface = MenuInterfaceToSet;
 }
 
-void UMainMenu::Host_ButtonOnClick()
+void UMainMenu::HostServer()
 {
 	if (MenuInterface) { MenuInterface->Host(); UE_LOG(LogTemp, Warning, TEXT("Host Button Clicked")) }
+}
+
+void UMainMenu::OpenJoinMenu()
+{
+	if (!MenuSwitcher) { return; }
+	if (!JoinMenu) { return; }
+
+	MenuSwitcher->SetActiveWidget(JoinMenu);
+}
+
+void UMainMenu::OpenMainMenu()
+{
+	if (!MenuSwitcher) { return; }
+	if (!MainMenu) { return; }
+
+	MenuSwitcher->SetActiveWidget(MainMenu);
 }

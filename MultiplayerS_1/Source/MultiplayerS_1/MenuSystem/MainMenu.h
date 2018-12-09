@@ -20,6 +20,7 @@ public:
 	void SetMenuInterface(IMenuInterface* MenuInterfaceToSet);
 
 	void Setup();
+
 	void OnLevelRemovedFromWorld(ULevel* Inlevel, UWorld* InWorld) override;
 
 private:
@@ -27,13 +28,31 @@ private:
 	IMenuInterface * MenuInterface;
 
 	UPROPERTY(meta = (BindWidget))
-	class UButton* Host_Button;
+	class UButton* HostButton;
 	
 	UPROPERTY(meta = (BindWidget))
-	class UButton* Join_Button;
+	class UButton* JoinButton;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* BackButton;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* MenuSwitcher;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidget* JoinMenu;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidget* MainMenu;
 
 	UFUNCTION()
-	void Host_ButtonOnClick();
+	void HostServer();
+
+	UFUNCTION()
+	void OpenJoinMenu();
+
+	UFUNCTION()
+	void OpenMainMenu();
 
 protected:
 
