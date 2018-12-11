@@ -3,29 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
-#include "MenuInterface.h"
+#include "MenuSystem/MenuWidget.h"
 #include "MainMenu.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MULTIPLAYERS_1_API UMainMenu : public UUserWidget
+class MULTIPLAYERS_1_API UMainMenu : public UMenuWidget
 {
 	GENERATED_BODY()
 
-public:
-
-	void SetMenuInterface(IMenuInterface* MenuInterfaceToSet);
-
-	void Setup();
-
-	void OnLevelRemovedFromWorld(ULevel* Inlevel, UWorld* InWorld) override;
-
 private:
-
-	IMenuInterface * MenuInterface;
 
 	UPROPERTY(meta = (BindWidget))
 	class UButton* HostButton;
