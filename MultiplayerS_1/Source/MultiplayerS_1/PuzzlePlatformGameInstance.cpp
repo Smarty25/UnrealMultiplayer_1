@@ -73,3 +73,16 @@ void UPuzzlePlatformGameInstance::Join(const FString& IPAddress)
 
 	PlayerController->ClientTravel(IPAddress, ETravelType::TRAVEL_Absolute);
 }
+
+void UPuzzlePlatformGameInstance::ReturnToMainMenu()
+{
+	UEngine* Engine = GetEngine();
+	if (!Engine) { return; }
+
+	Engine->AddOnScreenDebugMessage(0, 2, FColor::Green, FString::Printf(TEXT("Returning to Main Menu")));
+
+	APlayerController* PlayerController = GetFirstLocalPlayerController();
+	if (!PlayerController) { return; }
+
+	PlayerController->ClientTravel("/Game/Menu/L_MainMenu", ETravelType::TRAVEL_Absolute);
+}

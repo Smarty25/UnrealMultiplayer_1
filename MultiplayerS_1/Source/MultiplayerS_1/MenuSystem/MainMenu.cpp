@@ -29,7 +29,7 @@ bool UMainMenu::Initialize()
 
 void UMainMenu::HostServer()
 {
-	if (MenuInterface) { MenuInterface->Host(); UE_LOG(LogTemp, Warning, TEXT("Host Button Clicked")) }
+	if (MenuInterface) { MenuInterface->Host(); }
 }
 
 void UMainMenu::JoinServer()

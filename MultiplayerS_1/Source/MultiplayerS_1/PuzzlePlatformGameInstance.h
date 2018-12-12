@@ -33,6 +33,9 @@ public:
 	UFUNCTION(Exec)
 	void Join(const FString& IPAddress);
 
+	UFUNCTION(Exec)
+	void ReturnToMainMenu();
+
 private:
 	TSubclassOf<class UUserWidget> MenuClass;
 
