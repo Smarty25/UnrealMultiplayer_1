@@ -22,10 +22,11 @@ bool UMainMenu::Initialize()
 	if (!JoinMenuJoinButton) { return false; }
 	JoinMenuJoinButton->OnClicked.AddDynamic(this, &UMainMenu::JoinServer);
 
+	if (!QuitButton) { return false; }
+	QuitButton->OnClicked.AddDynamic(this, &UMainMenu::QuitGame);
+
 	return true;
 }
-
-
 
 void UMainMenu::HostServer()
 {
@@ -52,4 +53,11 @@ void UMainMenu::OpenMainMenu()
 	if (!MainMenu) { return; }
 
 	MenuSwitcher->SetActiveWidget(MainMenu);
+}
+
+void UMainMenu::QuitGame()
+{
+	APlayerController* Player = GetWorld()->GetFirstPlayerController();
+	//UE_LOG(LogTemp, Warning, TEXT("Quit"))
+	Player->ConsoleCommand("quit");
 }
