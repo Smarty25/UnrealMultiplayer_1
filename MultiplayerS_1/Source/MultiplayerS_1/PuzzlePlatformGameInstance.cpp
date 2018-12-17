@@ -4,6 +4,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Runtime/UMG/Public/Blueprint/UserWidget.h"
 #include "Engine/Engine.h"
+#include "OnlineSubsystem.h"
 
 #include "MenuSystem/MainMenu.h"
 #include "MenuSystem/MenuWidget.h"
@@ -24,9 +25,14 @@ UPuzzlePlatformGameInstance::UPuzzlePlatformGameInstance(const FObjectInitialize
 void UPuzzlePlatformGameInstance::Init()
 {
 	Super::Init();
+
+	IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get(FName("OnlineSubsystem"));
+
+	if (OnlineSubsystem != nullptr){ UE_LOG(LogTemp, Warning, TEXT("%s"), *OnlineSubsystem->GetSubsystemName().ToString()) }
+	else { UE_LOG(LogTemp, Warning, TEXT("OnlineSubsystem not found."))}
 }
 
-void UPuzzlePlatformGameInstance::LoadMenu()
+void UPuzzlePlatformGameInstance::LoadMenuWidget()
 {
 	if (!MenuClass) { return; }
 
