@@ -26,10 +26,22 @@ void UPuzzlePlatformGameInstance::Init()
 {
 	Super::Init();
 
-	IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get(FName("OnlineSubsystem"));
+	IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get();
 
-	if (OnlineSubsystem != nullptr){ UE_LOG(LogTemp, Warning, TEXT("%s"), *OnlineSubsystem->GetSubsystemName().ToString()) }
-	else { UE_LOG(LogTemp, Warning, TEXT("OnlineSubsystem not found."))}
+	if (OnlineSubsystem != nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *OnlineSubsystem->GetSubsystemName().ToString());
+		IOnlineSessionPtr SessionInterface = OnlineSubsystem->GetSessionInterface();
+
+		if (SessionInterface.IsValid())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Session Interface gotten"));
+		}
+	}
+	else 
+	{ 
+		UE_LOG(LogTemp, Warning, TEXT("OnlineSubsystem not found."))
+	}
 }
 
 void UPuzzlePlatformGameInstance::LoadMenuWidget()
