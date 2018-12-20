@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "OnlineSubsystem.h"
+
 #include "MenuSystem/MenuInterface.h"
 #include "PuzzlePlatformGameInstance.generated.h"
 
@@ -21,6 +23,8 @@ public:
 
 	virtual void Init() override;
 
+	IOnlineSessionPtr SessionInterface;
+
 	UFUNCTION(BlueprintCallable)
 	void LoadMenuWidget();
 
@@ -29,6 +33,8 @@ public:
 	
 	UFUNCTION(Exec)
 	void Host();
+
+	void OnCreateSessionComplete(FName SessionName, bool bSucceded);
 
 	UFUNCTION(Exec)
 	void Join(const FString& IPAddress);

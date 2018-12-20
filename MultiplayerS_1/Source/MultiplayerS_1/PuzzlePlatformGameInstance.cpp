@@ -4,7 +4,8 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Runtime/UMG/Public/Blueprint/UserWidget.h"
 #include "Engine/Engine.h"
-#include "OnlineSubsystem.h"
+#include "OnlineSessionSettings.h"
+#include "OnlineSessionInterface.h"
 
 #include "MenuSystem/MainMenu.h"
 #include "MenuSystem/MenuWidget.h"
@@ -31,15 +32,15 @@ void UPuzzlePlatformGameInstance::Init()
 	if (OnlineSubsystem != nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *OnlineSubsystem->GetSubsystemName().ToString());
-		IOnlineSessionPtr SessionInterface = OnlineSubsystem->GetSessionInterface();
+		SessionInterface = OnlineSubsystem->GetSessionInterface();
 
 		if (SessionInterface.IsValid())
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Session Interface gotten"));
+			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnCreateSessionComplete);
 		}
 	}
-	else 
-	{ 
+	else
+	{
 		UE_LOG(LogTemp, Warning, TEXT("OnlineSubsystem not found."))
 	}
 }
@@ -68,6 +69,20 @@ void UPuzzlePlatformGameInstance::LoadInGameMenu()
 
 void UPuzzlePlatformGameInstance::Host()
 {
+	if (SessionInterface.IsValid())
+	{
+		FOnlineSessionSettings SessionSettings;
+		SessionInterface->CreateSession(0, TEXT("GameSession"), SessionSettings);
+	}
+}
+
+void UPuzzlePlatformGameInstance::OnCreateSessionComplete(FName SessionName, bool bSucceded)
+{
+	if (!bSucceded)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Not able to create session."));
+		return;
+	}
 	UEngine* Engine = GetEngine();
 	if (!Engine) { return; }
 
@@ -75,7 +90,7 @@ void UPuzzlePlatformGameInstance::Host()
 
 	UWorld* World = GetWorld();
 	if (!World) { return; }
-	
+
 	World->ServerTravel("/Game/ThirdPersonCPP/Maps/ThirdPersonExampleMap?listen");
 }
 
