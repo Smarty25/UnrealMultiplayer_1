@@ -9,9 +9,7 @@
 #include "MenuSystem/MenuInterface.h"
 #include "PuzzlePlatformGameInstance.generated.h"
 
-/**
- * 
- */
+const static FName SESSION_NAME = TEXT("GameSession");
 UCLASS()
 class MULTIPLAYERS_1_API UPuzzlePlatformGameInstance : public UGameInstance, public IMenuInterface
 {
@@ -34,7 +32,11 @@ public:
 	UFUNCTION(Exec)
 	void Host();
 
+	void CreateSession();
+
 	void OnCreateSessionComplete(FName SessionName, bool bSucceded);
+
+	void OnDestroySessionComplete(FName SessionName, bool bSucceded);
 
 	UFUNCTION(Exec)
 	void Join(const FString& IPAddress);

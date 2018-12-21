@@ -37,6 +37,7 @@ void UPuzzlePlatformGameInstance::Init()
 		if (SessionInterface.IsValid())
 		{
 			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnCreateSessionComplete);
+			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnDestroySessionComplete);
 		}
 	}
 	else
@@ -71,9 +72,23 @@ void UPuzzlePlatformGameInstance::Host()
 {
 	if (SessionInterface.IsValid())
 	{
-		FOnlineSessionSettings SessionSettings;
-		SessionInterface->CreateSession(0, TEXT("GameSession"), SessionSettings);
+		FNamedOnlineSession* PreviousSession = SessionInterface->GetNamedSession(SESSION_NAME);
+		if (PreviousSession)
+		{
+			SessionInterface->DestroySession(SESSION_NAME);
+			UE_LOG(LogTemp, Warning, TEXT("Session destroyed."));
+		}
+		else
+		{
+			CreateSession();
+		}
 	}
+}
+
+void UPuzzlePlatformGameInstance::CreateSession()
+{
+	FOnlineSessionSettings SessionSettings;
+	SessionInterface->CreateSession(0, SESSION_NAME, SessionSettings);
 }
 
 void UPuzzlePlatformGameInstance::OnCreateSessionComplete(FName SessionName, bool bSucceded)
@@ -92,6 +107,14 @@ void UPuzzlePlatformGameInstance::OnCreateSessionComplete(FName SessionName, boo
 	if (!World) { return; }
 
 	World->ServerTravel("/Game/ThirdPersonCPP/Maps/ThirdPersonExampleMap?listen");
+}
+
+void UPuzzlePlatformGameInstance::OnDestroySessionComplete(FName SessionName, bool bSucceded)
+{
+	if (bSucceded)
+	{
+		CreateSession();
+	}
 }
 
 void UPuzzlePlatformGameInstance::Join(const FString& IPAddress)
