@@ -34,10 +34,6 @@ public:
 
 	void CreateSession();
 
-	void OnCreateSessionComplete(FName SessionName, bool bSucceded);
-
-	void OnDestroySessionComplete(FName SessionName, bool bSucceded);
-
 	UFUNCTION(Exec)
 	void Join(const FString& IPAddress);
 
@@ -48,4 +44,10 @@ private:
 	TSubclassOf<class UUserWidget> MenuClass;
 
 	TSubclassOf<class UUserWidget> InGameMenuClass;
+
+	TSharedPtr<class FOnlineSessionSearch> SessionSearch;
+
+	void OnCreateSessionComplete(FName SessionName, bool bSucceded);
+	void OnDestroySessionComplete(FName SessionName, bool bSucceded);
+	void OnFindSessionComplete(bool bSucceded);
 };

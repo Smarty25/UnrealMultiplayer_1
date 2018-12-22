@@ -6,6 +6,7 @@
 #include "Engine/Engine.h"
 #include "OnlineSessionSettings.h"
 #include "OnlineSessionInterface.h"
+#include "OnlineSessionSettings.h"
 
 #include "MenuSystem/MainMenu.h"
 #include "MenuSystem/MenuWidget.h"
@@ -38,6 +39,14 @@ void UPuzzlePlatformGameInstance::Init()
 		{
 			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnCreateSessionComplete);
 			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnDestroySessionComplete);
+			SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnFindSessionComplete);
+
+			SessionSearch = MakeShareable(new FOnlineSessionSearch());
+			if (SessionSearch.IsValid())
+			{
+				SessionInterface->FindSessions(0, SessionSearch.ToSharedRef());
+				UE_LOG(LogTemp, Warning, TEXT("Started finding a session."))
+			}
 		}
 	}
 	else
@@ -115,6 +124,11 @@ void UPuzzlePlatformGameInstance::OnDestroySessionComplete(FName SessionName, bo
 	{
 		CreateSession();
 	}
+}
+
+void UPuzzlePlatformGameInstance::OnFindSessionComplete(bool bSucceded)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Find session complete."))
 }
 
 void UPuzzlePlatformGameInstance::Join(const FString& IPAddress)
