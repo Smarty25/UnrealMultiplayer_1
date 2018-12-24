@@ -14,7 +14,13 @@ class MULTIPLAYERS_1_API UMainMenu : public UMenuWidget
 {
 	GENERATED_BODY()
 
+public:
+
+	UMainMenu(const FObjectInitializer & ObjectInitializer);
+
 private:
+
+	TSubclassOf<class UUserWidget> ServerRowClass;
 
 	UPROPERTY(meta = (BindWidget))
 	class UButton* HostButton;
@@ -32,7 +38,10 @@ private:
 	class UButton* JoinMenuJoinButton;
 
 	UPROPERTY(meta = (BindWidget))
-	class UEditableTextBox* IPTextBox;
+	class UPanelWidget* ServerList;
+
+	/*UPROPERTY(meta = (BindWidget))
+	class UEditableTextBox* IPTextBox;*/
 
 	UPROPERTY(meta = (BindWidget))
 	class UWidgetSwitcher* MenuSwitcher;
