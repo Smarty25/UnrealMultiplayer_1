@@ -8,6 +8,7 @@
 #include "Components/WidgetSwitcher.h"
 #include "Components/EditableTextBox.h"
 #include "Components/PanelWidget.h"
+#include "Components/TextBlock.h"
 #include "ServerRow.h"
 
 UMainMenu::UMainMenu(const FObjectInitializer & ObjectInitializer)
@@ -41,6 +42,21 @@ bool UMainMenu::Initialize()
 	return true;
 }
 
+void UMainMenu::PopulateServerList(TArray<FString> ServerNames)
+{
+	UWorld* World = GetWorld();
+	if (!World) { return; }
+
+	ServerList->ClearChildren();
+
+	for (const FString& ServerName : ServerNames)
+	{
+		UServerRow* ServerRow = CreateWidget<UServerRow>(World, ServerRowClass);
+		ServerRow->ServerName->SetText(FText::FromString(ServerName));
+		ServerList->AddChild(ServerRow);
+	}
+}
+
 void UMainMenu::HostServer()
 {
 	if (MenuInterface) { MenuInterface->Host(); }
@@ -48,10 +64,7 @@ void UMainMenu::HostServer()
 
 void UMainMenu::JoinServer()
 {
-	UWidget* ServerRow = CreateWidget<UServerRow>(GetWorld(), ServerRowClass);
-	ServerList->AddChild(ServerRow);
-	UE_LOG(LogTemp, Warning, TEXT("%i children in server list."), ServerList->GetChildrenCount())
-	//if (MenuInterface) { MenuInterface->Join(Address); }
+	if (MenuInterface) { MenuInterface->Join(""); }
 }
 
 void UMainMenu::OpenJoinMenu()
@@ -60,6 +73,9 @@ void UMainMenu::OpenJoinMenu()
 	if (!JoinMenu) { return; }
 
 	MenuSwitcher->SetActiveWidget(JoinMenu);
+
+	if (!MenuInterface) { return; }
+	MenuInterface->RefreshServerList();
 }
 
 void UMainMenu::OpenMainMenu()

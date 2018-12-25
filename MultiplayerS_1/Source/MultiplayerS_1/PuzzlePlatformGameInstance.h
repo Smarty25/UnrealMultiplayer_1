@@ -39,8 +39,14 @@ public:
 
 	UFUNCTION(Exec)
 	void ReturnToMainMenu();
+	
+	UFUNCTION()
+	void RefreshServerList();
 
 private:
+
+	class UMainMenu* MainMenu;
+
 	TSubclassOf<class UUserWidget> MenuClass;
 
 	TSubclassOf<class UUserWidget> InGameMenuClass;

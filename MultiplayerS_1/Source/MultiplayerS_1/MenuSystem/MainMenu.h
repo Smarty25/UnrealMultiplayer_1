@@ -18,6 +18,8 @@ public:
 
 	UMainMenu(const FObjectInitializer & ObjectInitializer);
 
+	void PopulateServerList(TArray<FString> ServerNames);
+
 private:
 
 	TSubclassOf<class UUserWidget> ServerRowClass;

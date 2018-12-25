@@ -27,4 +27,5 @@ public:
 
 	virtual void ReturnToMainMenu() = 0;
 	
+	virtual void RefreshServerList() = 0;
 };
