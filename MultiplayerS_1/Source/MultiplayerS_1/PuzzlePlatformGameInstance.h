@@ -5,11 +5,13 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "OnlineSubsystem.h"
+#include "OnlineSessionInterface.h"
 
 #include "MenuSystem/MenuInterface.h"
 #include "PuzzlePlatformGameInstance.generated.h"
 
 const static FName SESSION_NAME = TEXT("GameSession");
+
 UCLASS()
 class MULTIPLAYERS_1_API UPuzzlePlatformGameInstance : public UGameInstance, public IMenuInterface
 {
@@ -35,7 +37,7 @@ public:
 	void CreateSession();
 
 	UFUNCTION(Exec)
-	void Join(const FString& IPAddress);
+	void Join(uint32 Index);
 
 	UFUNCTION(Exec)
 	void ReturnToMainMenu();
@@ -56,4 +58,5 @@ private:
 	void OnCreateSessionComplete(FName SessionName, bool bSucceded);
 	void OnDestroySessionComplete(FName SessionName, bool bSucceded);
 	void OnFindSessionComplete(bool bSucceded);
+	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
 };

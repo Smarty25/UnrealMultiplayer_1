@@ -5,7 +5,6 @@
 #include "Runtime/UMG/Public/Blueprint/UserWidget.h"
 #include "Engine/Engine.h"
 #include "OnlineSessionSettings.h"
-#include "OnlineSessionInterface.h"
 #include "OnlineSessionSettings.h"
 
 #include "MenuSystem/MainMenu.h"
@@ -40,6 +39,7 @@ void UPuzzlePlatformGameInstance::Init()
 			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnCreateSessionComplete);
 			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnDestroySessionComplete);
 			SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnFindSessionComplete);
+			SessionInterface->OnJoinSessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnJoinSessionComplete);
 		}
 	}
 	else
@@ -139,17 +139,28 @@ void UPuzzlePlatformGameInstance::OnFindSessionComplete(bool bSucceded)
 	}
 }
 
-void UPuzzlePlatformGameInstance::Join(const FString& IPAddress)
+void UPuzzlePlatformGameInstance::OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result)
 {
-	/*UEngine* Engine = GetEngine();
-	if (!Engine) { return; }
-
-	Engine->AddOnScreenDebugMessage(0, 2, FColor::Green, FString::Printf(TEXT("Joining %s"), *IPAddress));
+	FString ConnectInfo;
+	if (!SessionInterface->GetResolvedConnectString(SessionName, ConnectInfo)) 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Could not get Connect info."))
+		return;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("ConnectInfo = %s"), *ConnectInfo)
 
 	APlayerController* PlayerController = GetFirstLocalPlayerController();
 	if (!PlayerController) { return; }
 
-	PlayerController->ClientTravel(IPAddress, ETravelType::TRAVEL_Absolute);*/
+	PlayerController->ClientTravel(ConnectInfo, ETravelType::TRAVEL_Absolute);
+}
+
+void UPuzzlePlatformGameInstance::Join(uint32 Index)
+{
+	if (!SessionInterface.IsValid()) { return; }
+	if (!SessionSearch.IsValid()) { return; }
+
+	SessionInterface->JoinSession(0, SESSION_NAME, SessionSearch->SearchResults[Index]);
 }
 
 void UPuzzlePlatformGameInstance::ReturnToMainMenu()
