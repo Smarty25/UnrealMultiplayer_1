@@ -49,12 +49,24 @@ void UMainMenu::PopulateServerList(TArray<FString> ServerNames)
 
 	ServerList->ClearChildren();
 
+	uint32 Index = 0;
+
+	//Testing
+	ServerNames = { "Test 1", "Test 2" };
+
 	for (const FString& ServerName : ServerNames)
 	{
 		UServerRow* ServerRow = CreateWidget<UServerRow>(World, ServerRowClass);
 		ServerRow->ServerName->SetText(FText::FromString(ServerName));
+		ServerRow->Setup(this, Index);
+		Index++;
 		ServerList->AddChild(ServerRow);
 	}
+}
+
+void UMainMenu::SetSelectedIndex(uint32 Index)
+{
+	SelectedIndex = Index;
 }
 
 void UMainMenu::HostServer()
@@ -65,6 +77,15 @@ void UMainMenu::HostServer()
 void UMainMenu::JoinServer()
 {
 	if (MenuInterface) { MenuInterface->Join(""); }
+
+	if (SelectedIndex.IsSet())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Selected Index is %d"), SelectedIndex.GetValue())
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Selected Index is not set."))
+	}
 }
 
 void UMainMenu::OpenJoinMenu()
