@@ -6,6 +6,17 @@
 #include "MenuSystem/MenuWidget.h"
 #include "MainMenu.generated.h"
 
+USTRUCT()
+struct FServerData 
+{
+	GENERATED_BODY()
+
+	FString Name;
+	uint16 CurrentPlayers;
+	uint16 MaxPlayers;
+	FString HostUsername;
+};
+
 /**
  * 
  */
@@ -18,7 +29,7 @@ public:
 
 	UMainMenu(const FObjectInitializer & ObjectInitializer);
 
-	void PopulateServerList(TArray<FString> ServerNames);
+	void PopulateServerList(TArray<FServerData> ServerDataSet);
 
 	void SetSelectedIndex(uint32 Index);
 

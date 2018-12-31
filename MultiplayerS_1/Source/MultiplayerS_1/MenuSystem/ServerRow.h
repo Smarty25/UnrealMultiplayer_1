@@ -20,6 +20,15 @@ public:
 	class UTextBlock* ServerName;
 
 	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* HostUsername;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* CurrentPlayers;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* MaxPlayers;
+
+	UPROPERTY(meta = (BindWidget))
 	class UButton* RowButton;
 	
 	void Setup(class UMainMenu* Parent, uint32 Index);

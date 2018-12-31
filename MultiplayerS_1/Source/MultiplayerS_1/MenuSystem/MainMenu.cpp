@@ -42,7 +42,7 @@ bool UMainMenu::Initialize()
 	return true;
 }
 
-void UMainMenu::PopulateServerList(TArray<FString> ServerNames)
+void UMainMenu::PopulateServerList(TArray<FServerData> ServerDataSet)
 {
 	UWorld* World = GetWorld();
 	if (!World) { return; }
@@ -54,10 +54,15 @@ void UMainMenu::PopulateServerList(TArray<FString> ServerNames)
 	//Testing
 	//ServerNames = { "Test 1", "Test 2" };
 
-	for (const FString& ServerName : ServerNames)
+	for (const FServerData& ServerData : ServerDataSet)
 	{
 		UServerRow* ServerRow = CreateWidget<UServerRow>(World, ServerRowClass);
-		ServerRow->ServerName->SetText(FText::FromString(ServerName));
+
+		ServerRow->ServerName->SetText(FText::FromString(ServerData.Name));
+		ServerRow->HostUsername->SetText(FText::FromString(ServerData.HostUsername));
+		ServerRow->CurrentPlayers->SetText(FText::AsNumber(ServerData.CurrentPlayers));
+		ServerRow->MaxPlayers->SetText(FText::AsNumber(ServerData.MaxPlayers));
+
 		ServerRow->Setup(this, Index);
 		Index++;
 		ServerList->AddChild(ServerRow);
